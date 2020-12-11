@@ -1,6 +1,7 @@
 package com.RickieProject.FlashCardCreater.Model;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -11,6 +12,23 @@ public class User {
     int userID;
     String username;
     String password;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_role",
+            joinColumns = @JoinColumn(name = "idUser"),
+            inverseJoinColumns = @JoinColumn(name = "idRole")
+    )
+    private Set<Role> roles = new HashSet<>();
+
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
 
     @OneToMany(fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
@@ -24,6 +42,10 @@ public class User {
     }
     User(){
 
+    }
+    User(Set<Role> roles, Set<FlashCard> cards){
+        this.roles = roles;
+        this.cards = cards;
     }
 
     public String getName() {
@@ -67,6 +89,7 @@ public class User {
                 "userID=" + userID +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", roles=" + roles +
                 ", cards=" + cards +
                 ", name='" + name + '\'' +
                 '}';

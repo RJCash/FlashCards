@@ -5,7 +5,6 @@ import com.RickieProject.FlashCardCreater.Model.User;
 import javax.persistence.*;
 import java.io.Serializable;
 
-@Embeddable
 @Entity
 public class FlashCard implements Serializable {
     @Id

@@ -46,14 +46,3 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 }
 
-// http.csrf().disable()
-//         .authorizeRequests()
-//         .antMatchers("/").permitAll()
-//         .anyRequest().hasRole("USER")
-//         .and()
-//         .formLogin()
-//         .loginPage("/Login").permitAll()
-//         .and()
-//         .logout()
-//         .logoutUrl("/Logout1")
-//         .permitAll();
