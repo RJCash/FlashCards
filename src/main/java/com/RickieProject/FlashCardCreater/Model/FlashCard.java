@@ -1,23 +1,24 @@
 package com.RickieProject.FlashCardCreater.Model;
 
-import com.RickieProject.FlashCardCreater.Model.User;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
+@Table(name = "flash_card")
 public class FlashCard implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idFlashCard")
+    @Column(name = "idflashcard")
     int flashCardID;
-
+    @Column(name ="question")
     String question;
+    @Column(name ="answer")
     String answer;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "idUser", nullable = false)
-    User user;
+    @ManyToOne
+    @JoinColumn(name = "iduser", nullable = false)
+    private User user;
 
     FlashCard(){
 

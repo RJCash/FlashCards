@@ -9,30 +9,20 @@ import java.util.Set;
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
+    @Column(name = "idrole")
+    private Integer idRole;
+    @Column(name = "name")
     private String name;
-
+    @Column(name = "description")
     private String description;
 
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany(mappedBy = "roles",fetch = FetchType.EAGER)
     private Set<User> users = new HashSet<>();
 
     Role(){
 
     }
 
-    Role(Set<User> users){
-        this.users = users;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -50,13 +40,29 @@ public class Role {
         this.description = description;
     }
 
+    public Integer getIdRole() {
+        return idRole;
+    }
+
+    public void setIdRole(Integer idRole) {
+        this.idRole = idRole;
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
+
     @Override
     public String toString() {
         return "Role{" +
-                "id=" + id +
+                "idRole=" + idRole +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", users=" + users +
+
                 '}';
     }
 }

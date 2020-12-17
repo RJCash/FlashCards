@@ -1,5 +1,7 @@
 package com.RickieProject.FlashCardCreater.Security;
 
+import com.RickieProject.FlashCardCreater.Service.MyUserDetailsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -14,24 +16,25 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    MyUserDetailsService userService;
+
+    public static PasswordEncoder encoder = new BCryptPasswordEncoder();
 
     @Bean
     public PasswordEncoder getPasswordEncoder(){
-        return new BCryptPasswordEncoder();
+        return this.encoder;
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-       auth.inMemoryAuthentication()
-               .passwordEncoder(getPasswordEncoder())
-               .withUser("user123")
-               .password(getPasswordEncoder().encode("password"))
-               .roles("USER");
+        auth.userDetailsService(userService)
+                .passwordEncoder(encoder);
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
                 .anyRequest().hasRole("USER")

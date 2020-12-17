@@ -7,45 +7,34 @@ import java.util.Set;
 @Entity
 @Table(name = "User")
 public class User {
+    //note: MySQL auto underscores and lowercases IDs ex. idUser becomes id_user. Better to set all IDs lowercase
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="idUser")
+    @Column(name="iduser")
     int userID;
+    @Column(name="name")
+    String name;
+    @Column(name="username")
     String username;
+    @Column(name="password")
     String password;
 
+    //note: fetch type EAGER is used to avoid LazyInitializationException error (may change).
+    //Good for a small projects like this, but not so for large ones based on n+1 overhead reads.
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_role",
-            joinColumns = @JoinColumn(name = "idUser"),
-            inverseJoinColumns = @JoinColumn(name = "idRole")
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName="idUser"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName="idRole")
     )
     private Set<Role> roles = new HashSet<>();
 
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-
-    @OneToMany(fetch = FetchType.LAZY,
+    @OneToMany(fetch = FetchType.EAGER,mappedBy = "user",
             cascade = CascadeType.ALL)
-    Set<FlashCard> cards;
+    Set<FlashCard> cards = new HashSet<>();
 
-    String name;
 
-    User(String name){
-        this.name = name;
+    public User(){
 
-    }
-    User(){
-
-    }
-    User(Set<Role> roles, Set<FlashCard> cards){
-        this.roles = roles;
-        this.cards = cards;
     }
 
     public String getName() {
@@ -58,6 +47,13 @@ public class User {
         return userID;
     }
 
+    public Set<Role> getRoles() {
+        return this.roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
 
     public Set<FlashCard> getCards() {
         return cards;
@@ -83,15 +79,16 @@ public class User {
         this.cards = cards;
     }
 
+
     @Override
     public String toString() {
         return "User{" +
                 "userID=" + userID +
+                ", name='" + name + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", roles=" + roles +
+
                 ", cards=" + cards +
-                ", name='" + name + '\'' +
                 '}';
     }
 }

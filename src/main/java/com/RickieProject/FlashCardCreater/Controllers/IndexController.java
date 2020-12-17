@@ -2,6 +2,7 @@ package com.RickieProject.FlashCardCreater.Controllers;
 
 import com.RickieProject.FlashCardCreater.Database.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -18,8 +19,10 @@ public class IndexController {
     }
 
     //Test page
+    @Secured(value={"USER"})
     @GetMapping(value="/AccessOnlyForUser")
     public String someMapping(){
+        System.out.println("Success");
         return "AccessOnlyForUser";
     }
 
