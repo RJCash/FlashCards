@@ -14,8 +14,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-
-
 @Service
 public class MyUserDetailsService implements UserDetailsService {
     @Autowired
@@ -34,8 +32,26 @@ public class MyUserDetailsService implements UserDetailsService {
         if(user == null){
             throw new UsernameNotFoundException("Invalid username or password");
         }
-        //encrypt password
-        user.setPassword(SecurityConfig.encoder.encode(user.getPassword()));
+        //encrypt test users with unencrypted password
+//        if(user.getUsername().equals("RJC@username") || user.getUsername().equals("bob@username")){
+//            user.setPassword(SecurityConfig.encoder.encode(user.getPassword()));
+//        }
+
+        CustomUserDetails userDetails = new CustomUserDetails(user);
+        System.out.println(userDetails.toString());
+        return userDetails;
+    }
+
+    public UserDetails loadUserDetailsByUser(User user) throws UsernameNotFoundException {
+        if(user == null){
+            throw new UsernameNotFoundException("Invalid username or password");
+        }
+        user.toString();
+
+        //encrypt test users with unencrypted password
+//        if(user.getUsername().equals("RJC@username") || user.getUsername().equals("bob@username")){
+//            user.setPassword(SecurityConfig.encoder.encode(user.getPassword()));
+//        }
 
         CustomUserDetails userDetails = new CustomUserDetails(user);
         return userDetails;

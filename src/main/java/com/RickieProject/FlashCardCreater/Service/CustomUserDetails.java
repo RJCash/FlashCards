@@ -32,6 +32,7 @@ public class CustomUserDetails implements UserDetails {
 //            System.out.println( itr.next().getAuthority() );
 //        }
 
+
     }
 
     @Override
@@ -42,7 +43,17 @@ public class CustomUserDetails implements UserDetails {
         return _grntdAuths;
     }
 
-
+    @Override
+    public String toString() {
+        return "CustomUserDetails{" +
+                "user=" + user +
+                ", id=" + id +
+                ", name='" + name + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", _grntdAuths=" + _grntdAuths +
+                '}';
+    }
 
     @Override
     public String getPassword() {

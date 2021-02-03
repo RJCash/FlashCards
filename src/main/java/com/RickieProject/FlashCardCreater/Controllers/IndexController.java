@@ -9,14 +9,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class IndexController {
 
-    @Autowired
-    UserRepo repo;
 
     @GetMapping(value="/")
     public String indexMapping(){
 
         return "index";
     }
+
 
     //Test page
     @Secured(value={"USER"})
